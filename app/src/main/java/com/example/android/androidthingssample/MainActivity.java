@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String LED_PIN_3_NAME = "IO7";
     private static final String LED_PIN_4_NAME = "IO9";
 
+    private static final int INTERVAL_BETWEEN_BLINKS_MS = 1000;
+
     private Handler mHandler = new Handler();
 
     private Gpio mButtonGpio;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             // Step 4. Register an event callback.
             mButtonGpio.registerGpioCallback(mCallback);
 
-            mLedGpio = service.openGpio(LED_1_PIN_NAME);
+            mLedGpio = service.openGpio(LED_PIN_1_NAME);
             // Step 2. Configure as an output.
             mLedGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
 
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 // Step 3. Toggle the LED state
                 mLedGpio.setValue(!mLedGpio.getValue());
+                Log.d(TAG, "LED status: " + mLedGpio.getValue());
 
                 // Step 4. Schedule another event after delay.
                 mHandler.postDelayed(mBlinkRunnable, INTERVAL_BETWEEN_BLINKS_MS);
